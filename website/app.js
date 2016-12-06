@@ -13,6 +13,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/', routes);
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
   console.log("Application running on port:", PORT);
 });
