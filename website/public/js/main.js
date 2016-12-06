@@ -12,7 +12,7 @@ app.controller("mainController", function ($scope, $http) {
     $http.post('/api/encrypt', $scope.formData)
       .success(function(resp) {
         $scope.formData = {};
-        $scope.display = resp;
+        $scope.display.text = resp.text;
       })
       .error(handleError);
   };
