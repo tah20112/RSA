@@ -47,7 +47,7 @@ function lilFermat(a, p){
 
 function strPow(x, y){
   var result = "1";
-  for (i = 0; i < y; i++){
+  for (i = 0; i < parseInt(y); i++){
     result = strint.mul(result, x);
   }
   console.log(result);
