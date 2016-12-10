@@ -63,7 +63,7 @@ define(function () {
             }
         }
         if (borrow > 0) {
-            result = String(borrow) + result;
+            result = String(borrow) + prefixZeros(result, leadingZeros);
         }
         return result;
     }
@@ -123,7 +123,7 @@ define(function () {
             }
         }
         if (carry > 0) {
-            result = String(carry) + result;
+            result = String(carry) + prefixZeros(result, leadingZeros);
         }
         return result.length === 0 ? "0" : result;
     }
