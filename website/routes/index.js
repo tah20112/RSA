@@ -34,7 +34,7 @@ function lilFermat(a, p){
    * return true if this equality is maintained for the given
    * values*/
 
-  var mod = strPow(a,p) % p;
+  var mod = strMod(strPow(a,p),p);
   console.log(mod);
   if (mod === a){
     console.log("true");
@@ -52,10 +52,6 @@ function strPow(x, y){
   }
   return result;
 }
-
-var re = strPow("3","41");
-console.log(re);
-var verm = lilFermat("3", "41");
 
 function strMod(x, y) {
   /* Returns x mod y */
