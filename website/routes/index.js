@@ -15,7 +15,8 @@ router.post('/api/encrypt', (req, res) => {
     const encryptedNum = (num + 1) % 26;
     encrypted += String.fromCharCode(encryptedNum + 97);
   }
-  console.log(strPow("3", "5"));
+  let large = strPow("3", "41");
+  console.log(strint.quotientRemainderPositive(large, "10")[1])
   res.json({text:encrypted});
 });
 
@@ -51,6 +52,11 @@ function strPow(x, y){
   }
   console.log(result);
   return result;
+}
+
+function mod(x, y) {
+  /* Returns x mod y */
+  return strint.quotientRemainderPositive(x, y)[1]
 }
 
 module.exports = router;
