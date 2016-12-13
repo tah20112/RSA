@@ -162,6 +162,38 @@ define(function () {
         return (sameSign(lhs, rhs) ? absResult : negate(absResult));
     }
 
+    //------------------ Base Conversion 2 -> 10
+    
+    var binToDec = e.binToDec = function (input){
+        forceString(input);
+        let binarE = input;
+        let output = "0";
+        for (let i = 0; i<input.length; i++){
+            if (binarE.slice(-1) === "1"){
+                output = add(output, Math.pow(2,i).toString());
+            }
+            binarE = binarE.slice(0,-1);
+        }
+        return output;
+    }
+
+    //----------------- Base Conversion 10 -> 2
+
+    var decToBin = e.decToBin = function (input){
+        forceString(input);
+        let output = "";
+        let curr = input;
+        while(curr > 0){
+            output = quotientRemainderPositive(curr, "2")[1] + output;
+            curr = div(curr, "2");
+        }
+        var missZeros = sub("8",quotientRemainderPositive(output.length.toString(),"8")[1]);
+        for (let i = 0; i<missZeros; i++){
+            output = "0" + output;
+        }
+        return output;
+    }
+
     //------------------- Division
 
     var quotientRemainderPositive = e.quotientRemainderPositive = function (dividend, divisor) {
