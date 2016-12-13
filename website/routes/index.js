@@ -35,7 +35,6 @@ function lilFermat(a, p){
    * values*/
 
   var mod = modExp(a,p,p);
-  console.log(mod);
   if (mod === a){
     console.log("true");
     return true;
@@ -46,7 +45,7 @@ function lilFermat(a, p){
 }
 
 function modExp(m,n,e){
-    var total = "0";
+    var total = "1";
     var curr_val = "1";
     var old_vals = {0:"1"};
     var binarE = (e >>> 0).toString(2);
@@ -54,17 +53,17 @@ function modExp(m,n,e){
     var iter = binarE.length;
 
     old_vals[1] = strMod(m,n);
-    console.log(m,n,e);
      
     for (j = 0; j<iter; j++){
         curr_val = strMod(strint.mul(old_vals[counter],old_vals[counter]),n);
+        if (binarE & 1){
+            total = strint.mul(total, old_vals[counter]); 
+        }
         counter = counter*2;
         old_vals[counter] = curr_val;
-        if (binarE & 1){
-            total = strMod(strint.add(total, curr_val),n); 
-        }
         binarE = binarE.slice(0,-1);
     }
+    total = strMod(total, n);
     console.log(old_vals);
     return total;
 }
@@ -83,9 +82,10 @@ function decrypt(d, n){
     return mess;
 }
 
-lilFermat("3","41");
-lilFermat("21","41");
-lilFermat("5","41");
-lilFermat("17","41");
+lilFermat("53","40961");
+lilFermat("811","40961");
+lilFermat("247","40961");
+lilFermat("170","40961");
+lilFermat("3","179426549");
 
 module.exports = router;
