@@ -34,7 +34,7 @@ function lilFermat(a, p){
    * return true if this equality is maintained for the given
    * values*/
 
-  var mod = strMod(strPow(a,p),p);
+  var mod = modExp(a,p,p);
   console.log(mod);
   if (mod === a){
     console.log("true");
@@ -45,17 +45,47 @@ function lilFermat(a, p){
   }
 }
 
-function strPow(x, y){
-  var result = "1";
-  for (i = 0; i < parseInt(y); i++){
-    result = strint.mul(result, x);
-  }
-  return result;
+function modExp(m,n,e){
+    var total = "0";
+    var curr_val = "1";
+    var old_vals = {0:"1"};
+    var binarE = (e >>> 0).toString(2);
+    var counter = 1;
+    var iter = binarE.length;
+
+    old_vals[1] = strMod(m,n);
+    console.log(m,n,e);
+     
+    for (j = 0; j<iter; j++){
+        curr_val = strMod(strint.mul(old_vals[counter],old_vals[counter]),n);
+        counter = counter*2;
+        old_vals[counter] = curr_val;
+        if (binarE & 1){
+            total = strMod(strint.add(total, curr_val),n); 
+        }
+        binarE = binarE.slice(0,-1);
+    }
+    console.log(old_vals);
+    return total;
 }
 
 function strMod(x, y) {
   /* Returns x mod y */
   return strint.quotientRemainderPositive(x, y)[1]
 }
+
+function encrypt(message, e, n){
+    return 0;
+}
+
+function decrypt(d, n){
+    var mess = "No message";
+    return mess;
+}
+
+lilFermat("3","41");
+lilFermat("21","41");
+lilFermat("5","41");
+lilFermat("17","41");
 
 module.exports = router;
