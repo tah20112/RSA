@@ -45,27 +45,27 @@ function lilFermat(a, p){
 }
 
 function modExp(m,n,e){
-    var total = "1";
-    var curr_val = "1";
-    var old_vals = {0:"1"};
-    var binarE = (e >>> 0).toString(2);
-    var counter = 1;
-    var iter = binarE.length;
+  var total = "1";
+  var curr_val = "1";
+  var old_vals = {0:"1"};
+  var binarE = (e >>> 0).toString(2);
+  var counter = 1;
+  var iter = binarE.length;
 
-    old_vals[1] = strMod(m,n);
-     
-    for (j = 0; j<iter; j++){
-        curr_val = strMod(strint.mul(old_vals[counter],old_vals[counter]),n);
-        if (binarE.slice(-1) === "1"){
-            total = strint.mul(total, old_vals[counter]); 
-        }
-        counter = counter*2;
-        old_vals[counter] = curr_val;
-        binarE = binarE.slice(0,-1);
+  old_vals[1] = strMod(m,n);
+
+  for (j = 0; j<iter; j++){
+    curr_val = strMod(strint.mul(old_vals[counter],old_vals[counter]),n);
+    if (binarE.slice(-1) === "1"){
+      total = strint.mul(total, old_vals[counter]);
     }
-    total = strMod(total, n);
-    console.log(old_vals);
-    return total;
+    counter = counter*2;
+    old_vals[counter] = curr_val;
+    binarE = binarE.slice(0,-1);
+  }
+  total = strMod(total, n);
+  console.log(old_vals);
+  return total;
 }
 
 function strMod(x, y) {
@@ -74,12 +74,12 @@ function strMod(x, y) {
 }
 
 function encrypt(message, e, n){
-    return 0;
+  return 0;
 }
 
 function decrypt(d, n){
-    var mess = "No message";
-    return mess;
+  var mess = "No message";
+  return mess;
 }
 
 lilFermat("53","40961");
