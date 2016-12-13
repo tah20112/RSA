@@ -56,7 +56,7 @@ function modExp(m,n,e){
      
     for (j = 0; j<iter; j++){
         curr_val = strMod(strint.mul(old_vals[counter],old_vals[counter]),n);
-        if (binarE & 1){
+        if (binarE.slice(-1) === "1"){
             total = strint.mul(total, old_vals[counter]); 
         }
         counter = counter*2;
