@@ -64,7 +64,6 @@ function modExp(m,n,e){
     binarE = binarE.slice(0,-1);
   }
   total = strMod(total, n);
-  console.log(old_vals);
   return total;
 }
 
@@ -109,7 +108,6 @@ function d2t(value){
   return message;
 }
 
-console.log(t2d("Messenger"));
-console.log(d2t(t2d("Mess")));
+console.log(d2t(t2d("Message Received")));
 
 module.exports = router;

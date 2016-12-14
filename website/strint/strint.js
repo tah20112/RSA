@@ -170,7 +170,7 @@ define(function () {
         let output = "0";
         for (let i = 0; i<input.length; i++){
             if (binarE.slice(-1) === "1"){
-                output = add(output, Math.pow(2,i).toString());
+                output = add(output, pow("2",i.toString()).toString());
             }
             binarE = binarE.slice(0,-1);
         }
@@ -192,6 +192,17 @@ define(function () {
             output = "0" + output;
         }
         return output;
+    }
+    //------------------- Exponentiation
+
+    var pow = e.pow = function (base, radical){
+        forceString(base);
+        forceString(radical);
+        var result = "1";
+        for (let i = 0; i<radical; i++){
+            result = mul(result, base);
+        }
+        return result;
     }
 
     //------------------- Division
