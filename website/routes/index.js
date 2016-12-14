@@ -144,15 +144,4 @@ function getRSAKeys(p, q, e) {
   return {e, d, n};
 }
 
-function testRSA() {
-  const keys = getRSAKeys("11","13","7");
-
-  const message = "44";
-  const c = encrypt(message, keys.e, keys.n);
-  const decrypted = decrypt(c, keys.d, keys.n);
-  console.log(message,"->",c,"->",decrypted);
-}
-
-testRSA();
-
 module.exports = router;
