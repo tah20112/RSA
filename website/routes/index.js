@@ -3,17 +3,26 @@ var router = express.Router();
 var path = require("path");
 var strint = require("../strint/strint");
 
+let keys = {};
+
 router.get('/', (req, res, next) => {
   res.sendFile('main.html', { root: path.join(__dirname, '../public') });
 });
 
+router.post('/api/getKeys', (req, res) => {
+  keys = getRSAKeys(req.body.prime1.toString(), req.body.prime2.toString(), req.body.publicKey.toString());
+  res.json({keys});
+});
+
 router.post('/api/encrypt', (req, res) => {
-  const message = req.body.text;
-  const keys = getRSAKeys("11","13","7");
+  const message = req.body.message.toString();
   const encrypted = encrypt(message, keys.e, keys.n);
-  const decrypted = decrypt(encrypted, keys.d, keys.n);
-  console.log(message,"->",encrypted,"->",decrypted);
-  res.json({encrypted, decrypted});
+  res.json({encrypted});
+});
+
+router.post('/api/decrypt', (req, res) => {
+  const decrypted = decrypt(req.body.encrypted, keys.d, keys.n);
+  res.json({decrypted});
 });
 
 /* Our collection of functions for RSA encryption */
