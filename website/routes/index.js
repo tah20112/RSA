@@ -9,15 +9,11 @@ router.get('/', (req, res, next) => {
 
 router.post('/api/encrypt', (req, res) => {
   const message = req.body.text;
-  let encrypted = "";
-  for (var i=0; i<message.length; i++) {
-    const num = message.charCodeAt(i) - 97;
-    const encryptedNum = (num + 1) % 26;
-    encrypted += String.fromCharCode(encryptedNum + 97);
-  }
-  let large = strPow("3", "41");
-  console.log(strMod(large, "10"));
-  res.json({text:encrypted});
+  const keys = getRSAKeys("11","13","7");
+  const encrypted = encrypt(message, keys.e, keys.n);
+  const decrypted = decrypt(encrypted, keys.d, keys.n);
+  console.log(message,"->",encrypted,"->",decrypted);
+  res.json({encrypted, decrypted});
 });
 
 /* Our collection of functions for RSA encryption */
