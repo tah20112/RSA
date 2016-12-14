@@ -109,6 +109,7 @@ function d2t(value){
   return message;
 }
 
-console.log(d2t(t2d("Mess Rce")));
+console.log(t2d("Messenger"));
+console.log(d2t(t2d("Mess")));
 
 module.exports = router;
