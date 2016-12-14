@@ -21,7 +21,7 @@ router.post('/api/encrypt', (req, res) => {
 });
 
 router.post('/api/decrypt', (req, res) => {
-  const decrypted = decrypt(req.body.encrypted, keys.d, keys.n);
+  const decrypted = decrypt(req.body.encrypted.toString(), keys.d, keys.n);
   res.json({decrypted});
 });
 
@@ -73,7 +73,7 @@ function modExp(m, e, n){
   var total = "1";
   var curr_val = "1";
   var old_vals = {0:"1"};
-  var binarE = (e >>> 0).toString(2);
+  var binarE = strint.decToBin(e);
   var counter = 1;
   var iter = binarE.length;
 
@@ -103,8 +103,12 @@ function encrypt(m, e, n){
    * e: public key
    * n: modulus
    */
-  // TODO convert letters to numbers, currently only works for a number
-  return modExp(m, e, n);
+  const dec = t2d(m);
+  console.log("t2d message:",dec);
+  if (strint.gt(dec,n)) {
+    throw "Message too long for those primes. Use larger primes or a shorter message."
+  }
+  return modExp(dec, e, n);
 }
 
 function decrypt(c, d, n){
@@ -113,7 +117,10 @@ function decrypt(c, d, n){
    * d: private key
    * n: modulus
    */
-  return modExp(c, d, n);
+  console.log("c",c);
+  var temp = modExp(c, d, n);
+  console.log(temp, d2t(temp));
+  return d2t(temp);
 }
 
 function t2d(message){
@@ -142,8 +149,6 @@ function d2t(value){
   }
   return message;
 }
-
-console.log(d2t(t2d("Message Received")));
 
 function inverse(a, n) {
   /* Finds the modular multiplicative inverse of a with respect to n
@@ -194,7 +199,7 @@ function getRSAKeys(p, q, e) {
   // Find private key using Extended Euclidean Algorithm
   const d = inverse(e, phiN);
 
-  return {e, d, n};
+  return {e, d, n, phiN};
 }
 
 module.exports = router;
