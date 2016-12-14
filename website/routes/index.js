@@ -92,6 +92,35 @@ function decrypt(c, d, n){
   return modExp(c, d, n);
 }
 
+function t2d(message){
+  let uni = 0;
+  let numOut = "";
+  for (let i = 0; i<message.length; i++){
+    uni = (message[i].charCodeAt() >>> 0).toString(2);
+    var keep = uni.length;
+    for (let j = 0; j<(8-keep);j++){
+      uni = "0" + uni;
+    }
+    numOut = numOut + uni;
+  }
+  return strint.binToDec(numOut);
+}
+
+function d2t(value){
+  let currByte = "";
+  let message = "";
+  let binarE = strint.decToBin(value);
+  while (binarE){
+    currByte = binarE.slice(0,8);
+    currByte = strint.binToDec(currByte);
+    binarE = binarE.slice(8); 
+    message = message + String.fromCharCode(parseInt(currByte));
+  }
+  return message;
+}
+
+console.log(d2t(t2d("Message Received")));
+
 function inverse(a, n) {
   /* Finds the modular multiplicative inverse of a with respect to n
    * a: string
