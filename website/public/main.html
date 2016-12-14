@@ -14,27 +14,89 @@
   <body ng-controller="mainController">
     <div class="container">
       <h1>RSA App</h1>
-      <!-- Send Message Form -->
-      <div id="new-todo-form" class="row text-center">
-        <form class="form" role="form">
-          <div class="input-group">
-            <input type="text" class="form-control input-lg text-center" ng-model="formData.text">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary btn-lg" ng-click="newMessage()">Send Message</button>
-            </span>
-          </div>
-        </form>
+
+      <div class="row error">
+        <p>{{display.error}}</p>
       </div>
 
       <div class="row text-center">
-        <p>Original: {{display.original}}</p>
+        <h2>RSA Setup:</h2>
+
+        <div class="row">
+          <form class="form col-md-4" role="form">
+            <div class="input-group">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.prime1" placeholder="Prime 1" ng-change="testPrime1()">
+            </div>
+          </form>
+          <p class="col-md-8 text-left">Prime 1: Valid prime? {{display.isPrime1}}</p>
+        </div>
+
+        <div class="row">
+          <form class="form col-md-4" role="form">
+            <div class="input-group">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.prime2" placeholder="Prime 2" ng-change="testPrime2()">
+            </div>
+          </form>
+          <p class="col-md-8 text-left">Prime 2: Valid prime? {{display.isPrime2}}</p>
+        </div>
+
+        <div class="row">
+          <form class="form col-md-4" role="form">
+            <div class="input-group">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.publicKey" placeholder="Public Key">
+            </div>
+          </form>
+          <p class="col-md-8 text-left">The Public Key is publically accessible</p>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-primary btn-lg" ng-click="getKeys()">Get Private Key</button>
+        </div>
+
+        <div class="row">
+          <h3>Private Key: {{display.keys.d}}</h3>
+        </div>
+        <div class="row">
+          <h3>Modulus: {{display.keys.n}}</h3>
+        </div>
+        <div class="row">
+          <h3>Phi(n): {{display.keys.phiN}}</h3>
+        </div>
       </div>
-      <div class="row text-center">
-        <p>Encrypted: {{display.encrypted}}</p>
+
+      <div class="row"><br></div>
+
+      <!-- Send Message Form -->
+      <div id="new-todo-form" class="row text-center col-md-5">
+        <form class="form" role="form">
+          <div class="input-group">
+            <input type="text" class="form-control input-lg text-center" ng-model="formData.message" placeholder="Message">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary btn-lg" ng-click="encrypt()">Encrypt</button>
+            </span>
+          </div>
+        </form>
+        <div class="row text-center">
+          <h3>Encrypted: {{display.encrypted}}</h3>
+        </div>
       </div>
-      <div class="row text-center">
-        <p>Decrypted: {{display.decrypted}}</p>
+
+      <div class="row col-md-2"></div>
+
+      <div class="row col-md-5">
+        <form class="form" role="form">
+          <div class="input-group">
+            <input type="text" class="form-control input-lg text-center" ng-model="formData.encrypted" placeholder="Ciphertext">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary btn-lg" ng-click="decrypt()">Decrypt</button>
+            </span>
+          </div>
+        </form>
+        <div class="row text-center">
+          <h3>Decrypted: {{display.decrypted}}</h3>
+        </div>
       </div>
+
 
     </div>
   </body>

@@ -3,17 +3,34 @@ var router = express.Router();
 var path = require("path");
 var strint = require("../strint/strint");
 
+let keys = {};
+
 router.get('/', (req, res, next) => {
   res.sendFile('main.html', { root: path.join(__dirname, '../public') });
 });
 
+router.post('/api/getKeys', (req, res) => {
+  keys = getRSAKeys(req.body.prime1.toString(), req.body.prime2.toString(), req.body.publicKey.toString());
+  res.json({keys});
+});
+
 router.post('/api/encrypt', (req, res) => {
-  const message = req.body.text;
-  const keys = getRSAKeys("11","13","7");
+  const message = req.body.message.toString();
   const encrypted = encrypt(message, keys.e, keys.n);
-  const decrypted = decrypt(encrypted, keys.d, keys.n);
-  console.log(message,"->",encrypted,"->",decrypted);
-  res.json({encrypted, decrypted});
+  res.json({encrypted});
+});
+
+router.post('/api/decrypt', (req, res) => {
+  const decrypted = decrypt(req.body.encrypted.toString(), keys.d, keys.n);
+  res.json({decrypted});
+});
+
+router.post('/api/testPrime', (req, res) => {
+  let isPrime = false;
+  if (req.body.prime) {
+    isPrime = testPrime(req.body.prime.toString());
+  }
+  res.json({isPrime});
 });
 
 /* Our collection of functions for RSA encryption */
@@ -29,15 +46,22 @@ function lilFermat(a, p){
   /* if p is prime, then a^p = a mod(p). This function will
    * return true if this equality is maintained for the given
    * values*/
+  var temp = modExp(a,p,p)
+  return temp === a;
+}
 
-  var mod = modExp(a,p,p);
-  if (mod === a){
-    console.log("true");
-    return true;
-  } else{
-    console.log("falsch");
-    return false;
+function testPrime(p) {
+  /* Tests with lilFermat with 3 random numbers between 1 and p */
+  // Make three random ints from 0 to 100000
+  const max = strint.gt(p, "10000") ? 10000 : p;
+  for (var i=0; i<3; i++) {
+    const ran = (Math.floor(Math.random() * (max-2)) + 2).toString();
+    // If any of these return false, the whole thing fails
+    if (!lilFermat(ran, p)) {
+      return false;
+    }
   }
+  return true;
 }
 
 function modExp(m, e, n){
@@ -49,7 +73,7 @@ function modExp(m, e, n){
   var total = "1";
   var curr_val = "1";
   var old_vals = {0:"1"};
-  var binarE = (e >>> 0).toString(2);
+  var binarE = strint.decToBin(e);
   var counter = 1;
   var iter = binarE.length;
 
@@ -79,8 +103,12 @@ function encrypt(m, e, n){
    * e: public key
    * n: modulus
    */
-  // TODO convert letters to numbers, currently only works for a number
-  return modExp(m, e, n);
+  const dec = t2d(m);
+  console.log("t2d message:",dec);
+  if (strint.gt(dec,n)) {
+    throw "Message too long for those primes. Use larger primes or a shorter message."
+  }
+  return modExp(dec, e, n);
 }
 
 function decrypt(c, d, n){
@@ -89,7 +117,10 @@ function decrypt(c, d, n){
    * d: private key
    * n: modulus
    */
-  return modExp(c, d, n);
+  console.log("c",c);
+  var temp = modExp(c, d, n);
+  console.log(temp, d2t(temp));
+  return d2t(temp);
 }
 
 function t2d(message){
@@ -118,8 +149,6 @@ function d2t(value){
   }
   return message;
 }
-
-console.log(d2t(t2d("Message Received")));
 
 function inverse(a, n) {
   /* Finds the modular multiplicative inverse of a with respect to n
@@ -170,7 +199,7 @@ function getRSAKeys(p, q, e) {
   // Find private key using Extended Euclidean Algorithm
   const d = inverse(e, phiN);
 
-  return {e, d, n};
+  return {e, d, n, phiN};
 }
 
 module.exports = router;
