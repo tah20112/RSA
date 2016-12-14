@@ -10,6 +10,7 @@ app.controller("mainController", function ($scope, $http) {
   }
 
   $scope.encrypt = function() {
+    $scope.display.encrypted = "";
     $http.post('/api/encrypt', $scope.formData)
       .success(function(resp) {
         $scope.display.encrypted = resp.encrypted;
@@ -19,6 +20,7 @@ app.controller("mainController", function ($scope, $http) {
   };
 
   $scope.decrypt = function() {
+    $scope.display.decrypted = "";
     $http.post('/api/decrypt', $scope.formData)
       .success(function(resp) {
         $scope.display.decrypted = resp.decrypted;
@@ -28,6 +30,7 @@ app.controller("mainController", function ($scope, $http) {
   };
 
   $scope.getKeys = function() {
+    $scope.display.keys = {};
     $http.post('/api/getKeys', $scope.formData)
       .success(function(resp) {
         $scope.display.keys = resp.keys;
@@ -37,6 +40,7 @@ app.controller("mainController", function ($scope, $http) {
   };
 
   $scope.testPrime1 = function() {
+    $scope.display.isPrime1 = "";
     $http.post('/api/testPrime', {prime: $scope.formData.prime1})
       .success(function(resp) {
         $scope.display.isPrime1 = resp.isPrime;
@@ -46,6 +50,7 @@ app.controller("mainController", function ($scope, $http) {
   }
 
   $scope.testPrime2 = function() {
+    $scope.display.isPrime2 = "";
     $http.post('/api/testPrime', {prime: $scope.formData.prime2})
       .success(function(resp) {
         $scope.display.isPrime2 = resp.isPrime;
