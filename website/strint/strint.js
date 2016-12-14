@@ -65,6 +65,9 @@ define(function () {
         if (borrow > 0) {
             result = String(borrow) + prefixZeros(result, leadingZeros);
         }
+        if (result === "") {
+            result = "0";
+        }
         return result;
     }
     var add = e.add = function (x, y) {
