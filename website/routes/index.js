@@ -44,7 +44,12 @@ function lilFermat(a, p){
   }
 }
 
-function modExp(m,n,e){
+function modExp(m, e, n){
+  /* Computes m^e mod n */
+  if (typeof m != "string" || typeof e != "string" || typeof n != "string") {
+    throw "One or more arguments to modExp is not a string";
+  }
+
   var total = "1";
   var curr_val = "1";
   var old_vals = {0:"1"};
@@ -64,7 +69,6 @@ function modExp(m,n,e){
     binarE = binarE.slice(0,-1);
   }
   total = strMod(total, n);
-  console.log(old_vals);
   return total;
 }
 
@@ -73,19 +77,86 @@ function strMod(x, y) {
   return strint.quotientRemainderPositive(x, y)[1]
 }
 
-function encrypt(message, e, n){
-  return 0;
+function encrypt(m, e, n){
+  /* Encrypts a message with the public key
+   * m: message
+   * e: public key
+   * n: modulus
+   */
+  // TODO convert letters to numbers, currently only works for a number
+  return modExp(m, e, n);
 }
 
-function decrypt(d, n){
-  var mess = "No message";
-  return mess;
+function decrypt(c, d, n){
+  /* Decrypts an encryped message with the private key
+   * c: encrypted message
+   * d: private key
+   * n: modulus
+   */
+  return modExp(c, d, n);
 }
 
-lilFermat("53","40961");
-lilFermat("811","40961");
-lilFermat("247","40961");
-lilFermat("170","40961");
-lilFermat("3","179426549");
+function inverse(a, n) {
+  /* Finds the modular multiplicative inverse of a with respect to n
+   * a: string
+   * n: string
+   */
+  let t = "0";
+  let newt = "1";
+  let r = n;
+  let newr = a;
+  while (!strint.eq(newr,"0")) {
+    const quotient = strint.div(r, newr);
+    const temp1 = t;
+    t = newt;
+    newt = strint.sub(temp1, strint.mul(quotient, newt));
+    const temp2 = r;
+    r = newr;
+    newr = strint.sub(temp2, strint.mul(quotient, newr));
+  }
+  if (strint.gt(r, "1")) {
+    throw "a is not invertible";
+  }
+  if (strint.lt(t, "0")) {
+    t = strint.add(t, n);
+  }
+  return t;
+}
+
+function getRSAKeys(p, q, e) {
+  /* Generates an object with the relavent info to perform RSA
+   * p: first prime
+   * q: second prime
+   * e: public key
+   * Returns: {
+   *   e: public key
+   *   d: private key
+   *   n: modulus
+   * }
+   */
+  const n = strint.mul(p,q);
+
+  // Check that public key is not a divisor of phiN
+  const phiN = strint.mul(strint.sub(p,"1"), strint.sub(q,"1"));
+  if (strMod(phiN, e) === "0") {
+    throw "Error: public key is a divisor of phiN";
+  }
+
+  // Find private key using Extended Euclidean Algorithm
+  const d = inverse(e, phiN);
+
+  return {e, d, n};
+}
+
+function testRSA() {
+  const keys = getRSAKeys("11","13","7");
+
+  const message = "44";
+  const c = encrypt(message, keys.e, keys.n);
+  const decrypted = decrypt(c, keys.d, keys.n);
+  console.log(message,"->",c,"->",decrypted);
+}
+
+testRSA();
 
 module.exports = router;
