@@ -25,6 +25,14 @@ router.post('/api/decrypt', (req, res) => {
   res.json({decrypted});
 });
 
+router.post('/api/testPrime', (req, res) => {
+  let isPrime = false;
+  if (req.body.prime) {
+    isPrime = testPrime(req.body.prime.toString());
+  }
+  res.json({isPrime});
+});
+
 /* Our collection of functions for RSA encryption */
 
 function bigPrime(){
@@ -38,7 +46,22 @@ function lilFermat(a, p){
   /* if p is prime, then a^p = a mod(p). This function will
    * return true if this equality is maintained for the given
    * values*/
-  return modExp(a,p,p) === a;
+  var temp = modExp(a,p,p)
+  return temp === a;
+}
+
+function testPrime(p) {
+  /* Tests with lilFermat with 3 random numbers between 1 and p */
+  // Make three random ints from 0 to 100000
+  const max = strint.gt(p, "10000") ? 10000 : p;
+  for (var i=0; i<3; i++) {
+    const ran = (Math.floor(Math.random() * (max-2)) + 2).toString();
+    // If any of these return false, the whole thing fails
+    if (!lilFermat(ran, p)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function modExp(m, e, n){

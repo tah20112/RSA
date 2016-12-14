@@ -35,4 +35,22 @@ app.controller("mainController", function ($scope, $http) {
       })
       .error(handleError);
   };
+
+  $scope.testPrime1 = function() {
+    $http.post('/api/testPrime', {prime: $scope.formData.prime1})
+      .success(function(resp) {
+        $scope.display.isPrime1 = resp.isPrime;
+        $scope.display.error = "";
+      })
+      .error(handleError);
+  }
+
+  $scope.testPrime2 = function() {
+    $http.post('/api/testPrime', {prime: $scope.formData.prime2})
+      .success(function(resp) {
+        $scope.display.isPrime2 = resp.isPrime;
+        $scope.display.error = "";
+      })
+      .error(handleError);
+  }
 });

@@ -25,32 +25,32 @@
         <div class="row">
           <form class="form col-md-4" role="form">
             <div class="input-group">
-              <input type="number" class="form-control input-lg text-center" ng-model="formData.prime1" placeholder="Prime 1">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.prime1" placeholder="Prime 1" ng-change="testPrime1()">
             </div>
           </form>
-          <p class="col-md-8 text-left">Prime 1</p>
+          <p class="col-md-8 text-left">Prime 1: Valid prime? {{display.isPrime1}}</p>
         </div>
 
         <div class="row">
           <form class="form col-md-4" role="form">
             <div class="input-group">
-              <input type="number" class="form-control input-lg text-center" ng-model="formData.prime2" placeholder="Prime 2">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.prime2" placeholder="Prime 2" ng-change="testPrime2()">
             </div>
           </form>
-          <p class="col-md-8 text-left">Prime 2</p>
+          <p class="col-md-8 text-left">Prime 2: Valid prime? {{display.isPrime2}}</p>
         </div>
 
         <div class="row">
           <form class="form col-md-4" role="form">
             <div class="input-group">
-              <input type="number" class="form-control input-lg text-center" ng-model="formData.publicKey" placeholder="Public Key">
+              <input type="text" class="form-control input-lg text-center" ng-model="formData.publicKey" placeholder="Public Key">
             </div>
           </form>
           <p class="col-md-8 text-left">The Public Key is publically accessible</p>
         </div>
 
         <div class="row">
-          <button class="btn btn-primary btn-lg" ng-click="getKeys()">Get RSA Keys</button>
+          <button class="btn btn-primary btn-lg" ng-click="getKeys()">Get Private Key</button>
         </div>
 
         <div class="row">
