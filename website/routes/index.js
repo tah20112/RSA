@@ -38,15 +38,7 @@ function lilFermat(a, p){
   /* if p is prime, then a^p = a mod(p). This function will
    * return true if this equality is maintained for the given
    * values*/
-
-  var mod = modExp(a,p,p);
-  if (mod === a){
-    console.log("true");
-    return true;
-  } else{
-    console.log("falsch");
-    return false;
-  }
+  return modExp(a,p,p) === a;
 }
 
 function modExp(m, e, n){
