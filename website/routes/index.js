@@ -33,13 +33,27 @@ router.post('/api/testPrime', (req, res) => {
   res.json({isPrime});
 });
 
+router.get('/api/getPrime', (req, res) => {
+  const prime = bigPrime();
+  res.json({prime});
+});
+
 /* Our collection of functions for RSA encryption */
 
 function bigPrime(){
   /* Using random number generation and Fermat's little
-   * theorum, this function will find and output 2
-   * VERY large prime numbers for our RSA key. */
-
+   * theorum, this function will find and output one
+   * VERY large prime number for our RSA key. */
+  let strNum = "";
+  for (var i=0; i<20; i++) {
+    // Make a random digit
+    strNum += Math.floor(Math.random()*10).toString();
+  }
+  if (testPrime(strNum)) {
+    return strNum;
+  }
+  console.log(strNum,"not prime")
+  return bigPrime();
 }
 
 function lilFermat(a, p){
