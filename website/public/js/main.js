@@ -39,6 +39,17 @@ app.controller("mainController", function ($scope, $http) {
       .error(handleError);
   };
 
+  $scope.getPrime = function() {
+    $scope.display.prime = "Generating...";
+    $http.get('/api/getPrime')
+      .success(function(resp) {
+        console.log(resp.prime)
+        $scope.display.prime = resp.prime;
+        $scope.display.error = "";
+      })
+      .error(handleError);
+  }
+
   $scope.testPrime1 = function() {
     $scope.display.isPrime1 = "";
     $http.post('/api/testPrime', {prime: $scope.formData.prime1})
